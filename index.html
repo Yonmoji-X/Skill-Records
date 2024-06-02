@@ -21,10 +21,11 @@
       <nav>left
         <div class="nav-header">
           <h4>材料フォルダ一覧</h4>
+          <input type="text" name="" id="folder_name">
           <button id="btn_add_folder_element">＋</button>
         </div>
 
-        <div class="folder-wrapper">
+        <div class="folder-wrapper" id="folder_wrapper_element">
           <div class="folder" id="fldr_0">
             <h4>Skill-Records</h4>
             <ul>
@@ -66,24 +67,28 @@
           <div class="post">
             <div class="post-title">
               <p>タイトル</p>
-              <input type="text">
-              <select name="" id=""></select>
+              <input type="text" id="post_name">
+              <select name="" id="post_select">
+                <option value=""></option>
+              </select>
             </div>
             <div class="post-mc-wrapper">
               <div class="post-movie">
                 <p>Youtube埋め込み</p>
                 <p>共有＞埋め込み＞コピー＞ここに貼り付け</p>
-                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <textarea name="" id="post_tag" cols="30" rows="10"></textarea>
               </div>
               <div class="post-contents">
                 <div>
                   <h5>解説</h5>
                 </div>
                 <div>
-                  <textarea name="" id="" cols="30" rows="10"></textarea>
+                  <textarea name="" id="post_text" cols="30" rows="10"></textarea>
                 </div>
               </div>
-
+              <div>
+                <button id="send_post">投稿</button>
+              </div>
             </div>
             <!-- ---------------------------- -->
 
@@ -95,7 +100,7 @@
       <!-- <aside>right</aside> -->
   </div>
   <footer>footer</footer>
-  <script src="./js/firebase.js" type="module"></script>
-  <script src="./js/main.js"></script>
+  <!-- <script src="./js/firebase.js" type="module"></script> -->
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
