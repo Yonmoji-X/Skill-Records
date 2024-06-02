@@ -1,0 +1,32 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column
+  }
+  header {
+    outline: 1px solid gray;
+    background-color: lightcyan;
+    height: 100px;
+  }
+  div{
+    display: flex;
+    flex: 1;
+  }
+  main {
+    outline: 1px solid gray;
+    flex: 1;
+  }
+  nav {
+    outline: 1px solid gray;
+    width: 150px;
+  }
+  aside {
+    outline: 1px solid gray;
+    width: 200px;
+  }
+  footer {
+    outline: 1px solid gray;
+    background-color: lightcyan;
+    height: 100px;
+  }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill-Records</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+  <header>header</header>
+  <div>
+      <nav>left
+
+      </nav>
+      <main>center
+
+      </main>
+      <aside>right
+
+      </aside>
+  </div>
+  <footer>footer</footer>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    //★★★apiKeyはgit add .する前に隠す
+    const firebaseConfig = {
+
+      authDomain: "skill-records.firebaseapp.com",
+      projectId: "skill-records",
+      storageBucket: "skill-records.appspot.com",
+      messagingSenderId: "799912962661",
+      appId: "1:799912962661:web:26e8d3231f9a20d058b48c"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
