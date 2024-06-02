@@ -3,44 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skill-Records</title>
   <link rel="stylesheet" href="./css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-  <header>header</header>
+  <header>
+    <h1>Skill-Records</h1>
+    <ul>
+      <li>材料記事</li>
+      <li>体系記事</li>
+      <li>投稿</li>
+    </ul>
+  </header>
   <div>
       <nav>left
+        <div class="nav-header">
+          <h4>材料フォルダ一覧</h4>
+          <button id="btn_add_folder_element">＋</button>
+        </div>
 
+        <div class="folder-wrapper">
+          <div class="folder" id="fldr_0">
+            <h4>Skill-Records</h4>
+            <ul>
+              <li id="fldr_0_0">アカウント作成</li>
+              <li id="fldr_0_1">基本操作</li>
+              <li id="fldr_0_2">材料投稿方法</li>
+              <li id="fldr_0_3">体系投稿方法</li>
+            </ul>
+          </div>
+
+          <div class="folder">
+            <h4>jw_cad</h4>
+            <ul>
+              <li>インストール</li>
+              <li>1</li>
+              <li>1</li>
+              <li>1</li>
+            </ul>
+          </div>
+        </div>
       </nav>
       <main>center
+        <div class="post-wrapper">
+          <div class="post">
+            <div class="post-title">タイトル</div>
+            <div class="post-mc-wrapper">
+              <div class="post-movie">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/9mwqDviX0PY?si=1w6DEnwg0BHHeUzJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+              <div class="post-contents">
+                <div>
+                  <h5>解説</h5>
+                </div>
+                <div>内容〜〜〜〜〜〜</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
 
       </main>
-      <aside>right
-
-      </aside>
+      <!-- <aside>right</aside> -->
   </div>
   <footer>footer</footer>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
-
-    // Your web app's Firebase configuration
-    //★★★apiKeyはgit add .する前に隠す
-    const firebaseConfig = {
-
-      authDomain: "skill-records.firebaseapp.com",
-      projectId: "skill-records",
-      storageBucket: "skill-records.appspot.com",
-      messagingSenderId: "799912962661",
-      appId: "1:799912962661:web:26e8d3231f9a20d058b48c"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-  </script>
+  <script src="./js/firebase.js" type="module"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>

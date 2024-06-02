@@ -4,23 +4,128 @@ body {
     display: flex;
     flex-direction: column
   }
+
   header {
     outline: 1px solid gray;
     background-color: lightcyan;
     height: 100px;
   }
+
+  header h1 {
+    margin-bottom: 0px;
+  }
+
+  header ul{
+    margin-top: 0px;
+    display: flex;
+    flex-direction:row;
+  }
+
+  header li{
+    margin-right: 20px;
+    list-style: none;
+  }
+
   div{
     display: flex;
     flex: 1;
   }
+  /* ================================= */
   main {
     outline: 1px solid gray;
     flex: 1;
   }
+
+  /* iframe{
+  } */
+
+  .post {
+    background-color:aquamarine;
+    width: 90%;
+    /* height: 500px; */
+    margin: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-title {
+    /* background-color: #fff; */
+    height: 10px;
+    margin-bottom: 10px;
+    padding: 0px;
+  }
+  .post-movie{
+    margin: 0px auto;
+    padding: 0px;
+  }
+  .post-contents{
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+  /* ================================= */
   nav {
     outline: 1px solid gray;
-    width: 150px;
+    width: 200px;
   }
+
+  nav li{
+    list-style: none;
+    background-color: rgb(169, 252, 254);
+    margin: 2px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+  .nav-header{
+    margin: 2px 5px;
+  }
+  .nav-header h4{
+    margin: 5px;
+  }
+
+  #btn_add_folder_element{
+    width: 40px;
+    height: 25px;
+    margin: 5px;
+    padding: 0px;
+    border-radius: 20px;
+  }
+
+
+  .folder-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .folder {
+    background-color: aquamarine;
+    width: 95%;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5px;
+    border-radius: 10px;
+  }
+
+  .folder h4{
+    margin: 0px;
+    padding: 5px;
+  }
+  .folder ul{
+    margin: 0px;
+    padding: 0px;
+  }
+  .folder li{
+    padding: 3px;
+    margin-left: 10px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    font-size: 15px;
+  }
+
   aside {
     outline: 1px solid gray;
     width: 200px;
@@ -29,4 +134,11 @@ body {
     outline: 1px solid gray;
     background-color: lightcyan;
     height: 100px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    .post-mc-wrapper{
+      flex-direction: column;
+      padding-bottom: 5px;
+    }
   }
