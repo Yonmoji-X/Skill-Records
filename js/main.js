@@ -84,16 +84,17 @@ return id;
         addDoc(collection(db, 'folder'), folderData);
         //navにappend・prepend → ここはまとめて関数で画面更新。
 
-      //   $('#folder_wrapper_element').prepend(`<div class="folder" id=${folderData.id}>
-      //   <h4>${folderData.name}</h4>
-      //   <ul>
-      //   </ul>
-      // </div>`);
+        //   $('#folder_wrapper_element').prepend(`<div class="folder" id=${folderData.id}>
+        //   <h4>${folderData.name}</h4>
+        //   <ul>
+        //   </ul>
+        // </div>`);
 
-      $('#folder_name').val() = "";
+        $('#folder_name').val() = "";
       } else {
         alert('フォルダ名を入力してください。')
       }
+    location.reload();
     })
 
     const folderPosts = [];
@@ -138,13 +139,13 @@ return id;
 
 
 
-          console.log('folderElements');
-          console.log(folderElements)
+          // console.log('folderElements');
+          // console.log(folderElements)
           $('#folder_wrapper_element').empty();
           $('#folder_wrapper_element').prepend(folderElements);
           $('#post_select').prepend(postPullElements);
-          console.log(folderElements);
-          console.log(folderPosts);
+          // console.log(folderElements);
+          // console.log(folderPosts);
         });
 
 
@@ -244,6 +245,7 @@ $('#btn_add_post_element').on('click', function(){
       });
     });
     console.log(posts);
+
     function getFolderChilds(folderId) {
       let childPosts = [];
       posts.forEach(function(post) {
@@ -257,12 +259,94 @@ $('#btn_add_post_element').on('click', function(){
       });
       return childPosts
     }
-    // console.log(posts);
+
+    function getPostById(id) {
+      let thisPost = '';
+      posts.forEach(function(post) {
+        if(post.id == id) {
+          const postData = {
+            id: post.id,
+            data:post.data,
+          };
+          // thisPost.push(postData);
+          // thisPost.push(postData);
+          thisPost = postData
+        }
+      });
+      return thisPost
+    }
 
 $(document).on('click', '.folder', function(){
-  // 押されたfolderのid取得。
-  let folderId =  $(this).attr('id');
-  // このidでfolderに属したpostを取得。
-  console.log(getFolderChilds(folderId));
+  // console.log(folderClickedId);
+    let folderId =  $(this).attr('id');
+    // if ($(`#${folderId} li`)) {
+      $('.folder li').remove();
+      // $(`#${folderId} li`).remove();
+    // } else {
+      // 押されたfolderのid取得。
+      // このidでfolderに属したpostを取得。
+      let folderChilds = getFolderChilds(folderId);
+      folderChilds.forEach(function(folderChild) {
+        $(`#${folderId} ul`).prepend(`
+        <li id='${folderChild.id}'>${folderChild.data.name}</li>
+        `);
+      });
+      // console.log(folderChilds)
+      if (folderChilds.length == 0) {
+        alert('まだフォフォルダは空です。記事を追加してください。')
+      }
+    // }
 
 });
+// let folderClickedId = [];
+// $(document).on('click', '.folder', function(){
+//   console.log(folderClickedId);
+//     let folderId =  $(this).attr('id');
+//     if (folderClickedId.includes(folderId)) {
+//       let searchId = folderClickedId.includes(folderId);
+//       $(`#${folderId} li`).remove();
+//         folderClickedId.splice(searchId, 1);
+//     } else {
+//       // 押されたfolderのid取得。
+//       // このidでfolderに属したpostを取得。
+//       console.log(getFolderChilds(folderId));
+//       let folderChilds = getFolderChilds(folderId);
+//       folderChilds.forEach(function(folderChild) {
+//         $(`#${folderId} ul`).prepend(`
+//         <li id='${folderChild.id}'>${folderChild.data.name}</li>
+//         `);
+//       })
+//       folderClickedId.push(folderId);
+//     }
+// });
+
+
+// 真ん中に記事表示
+
+$(document).on('click', '.folder li', function(){
+  $('.post-wrapper').empty();
+  let postId =  $(this).attr('id');
+  console.log(postId)
+  let thisPost = getPostById(postId)
+  console.log(thisPost)
+  console.log(thisPost.data.name)
+  console.log(thisPost.data.tag)
+  console.log(thisPost.data.text)
+  $('.post-wrapper').prepend(`
+  <div class="post">
+  <div class="post-title">${thisPost.data.name}</div>
+  <div class="post-mc-wrapper">
+    <div class="post-movie">
+      ${thisPost.data.tag}
+    </div>
+    <div class="post-contents">
+      <div>
+        <h5>解説</h5>
+      </div>
+      <div>${thisPost.data.text}</div>
+    </div>
+  </div>
+</div>
+  `)
+});
+
