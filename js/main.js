@@ -35,7 +35,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-
+  
   authDomain: "skill-records-f67d6.firebaseapp.com",
   projectId: "skill-records-f67d6",
   storageBucket: "skill-records-f67d6.appspot.com",
@@ -49,6 +49,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 //dbを時刻順に並び替える。
 const q = query(collection(db, "folder"), orderBy("time", "desc"));
+const pq = query(collection(db, "post"), orderBy("time", "desc"));
 
 
 console.log(app);
@@ -73,8 +74,8 @@ return id;
     $('#btn_add_folder_element').on('click', function() {
       if ($('#folder_name').val()) {
         const folderData = {
-          // file:[],
-          // id: mkId(),
+          // file_id:[],
+          // ↑フォルダのデータにpostのid入れてた方が探しやすそう。どうなんだろ。
           name: $('#folder_name').val(),
           time: serverTimestamp(),
         };
@@ -113,7 +114,6 @@ return id;
 
           //みやすくくしたデータのタグを作る。
           const folderElements = [];
-          // const folderPosts = [];
           const postPullElements = [];
           documents.forEach(function(document) {
             folderElements.push(`
@@ -132,14 +132,13 @@ return id;
             postPullElements.push(`
             <option value=${document.id}>${document.data.name}</option>
             `);
-            // folderElements.push(`
-            // <li id="${document.id}">
-            //     <p>${document.data.name} at ${convertTimestampToDatetime(document.data.time.second)}</p>
-            //     <p>${document.data.text}</p>
-            // </li>
-
-            // `);
           });
+
+
+
+
+
+          console.log('folderElements');
           console.log(folderElements)
           $('#folder_wrapper_element').empty();
           $('#folder_wrapper_element').prepend(folderElements);
@@ -206,3 +205,64 @@ $('#btn_add_post_element').on('click', function(){
         alert('Youtubeを埋め込んでください。')
       }
     })
+
+
+
+    // ＝＝＝＝folderがクリックされたら＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+    // ◯◯がidの親要素に属するpostを取得
+
+    // function getFolderChilds(folderId) {
+    //   let documents = [];
+    //   onSnapshot(pq, (querySnapshot) => {
+    //     // console.log(querySnapshot.docs);
+    //     //欲しいものだけ取り出して新しい配列作る
+    //     querySnapshot.docs.forEach(function(doc) {
+    //       // console.log(doc.data().id)
+    //       if(doc.data().id == folderId) {
+    //         const document = {
+    //           id: doc.id,
+    //           data:doc.data(),
+    //         };
+    //         documents.push(document);
+    //       }
+    //     });
+    //     console.log(documents);
+    //   });
+    //   return documents
+    // }
+    // -------
+    let posts = [];
+    onSnapshot(pq, (querySnapshot) => {
+      // console.log(querySnapshot.docs);
+      //欲しいものだけ取り出して新しい配列作る
+      querySnapshot.docs.forEach(function(doc) {
+          const post = {
+            id: doc.id,
+            data:doc.data(),
+          };
+          posts.push(post);
+      });
+    });
+    console.log(posts);
+    function getFolderChilds(folderId) {
+      let childPosts = [];
+      posts.forEach(function(post) {
+        if(post.data.id == folderId) {
+          const childPost = {
+            id: post.id,
+            data:post.data,
+          };
+          childPosts.push(childPost);
+        }
+      });
+      return childPosts
+    }
+    // console.log(posts);
+
+$(document).on('click', '.folder', function(){
+  // 押されたfolderのid取得。
+  let folderId =  $(this).attr('id');
+  // このidでfolderに属したpostを取得。
+  console.log(getFolderChilds(folderId));
+
+});
