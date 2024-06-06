@@ -37,6 +37,12 @@ import {
   query,
   orderBy,
   onSnapshot,
+  // doc,
+  // deleteDoc,
+  // update,
+  // remove,
+  // onChildChanged,
+  // onChildRemoved,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -331,10 +337,16 @@ $(document).on('click', '.folder li', function () {
         ${thisPost.data.tag}
       </div>
       <div class="post-contents">
-        <div>
-          <h5>解説</h5>
-        </div>
-      <div>${thisPost.data.text}</div>
+
+        <ul>
+          <li>
+            <h5>解説</h5>
+          </li>
+          <li>
+            <div>${thisPost.data.text}</div>
+          </li>
+        </ul>
+
     </div>
   </div>
 </div>
@@ -342,7 +354,11 @@ $(document).on('click', '.folder li', function () {
 });
 
 // Postの削除
-$(document).on('click', '.remove-post', function () {
-  let postId = $(this).attr('id');
-
-});
+// $(document).on('click', '.remove-post', function () {
+//   let postId = $(this).attr('id');
+//   // const removePost = ref(db,'post/'+postId)
+//   // remove(removePost);
+//   // deleteDoc(doc(db, 'post'), postId);
+//   // remove()
+//   console.log(postId)
+// });

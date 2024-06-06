@@ -13,18 +13,24 @@
 <body>
   <header>
     <h1>Skill-Records</h1>
-    <ul>
-      <li>要素記事</li>
-      <li>体系記事</li>
+    <ul class="header-menu">
+      <!-- <li>要素記事</li>
+      <li>体系記事</li> -->
       <li id="btn_add_post_element">投稿</li>
     </ul>
   </header>
-  <div>
-    <nav>left
+  <div class="center">
+    <nav>
       <div class="nav-header">
-        <h4>材料フォルダ一覧</h4>
-        <input type="text" name="" id="folder_name">
-        <button id="btn_add_folder_element">＋</button>
+        <ul class="nav-title">
+          <li>
+            <h4>材料フォルダ一覧</h4>
+            <button id="btn_add_folder_element">＋</button>
+          </li>
+          <li>
+            <input type="text" name="" id="folder_name">
+          </li>
+        </ul>
       </div>
 
       <div class="folder-wrapper" id="folder_wrapper_element">
@@ -52,9 +58,9 @@
         </div>
       </div>
     </nav>
-    <main>center
-      <div id="post-wrapper" class="post-wrapper">
-        <div class="post">
+    <main>
+      <div id="post-wrapper" class="post-wrapper" >
+        <!-- <div class="post">
           <div class="folder-post-head">
             <div class="post-title">タイトル</div>
             <button class="remove-post">削除</button>
@@ -73,10 +79,10 @@
               <div>内容〜〜〜〜〜〜</div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- ====================== -->
-        <div class="post">
+        <!-- <div class="post">
           <H4>投稿</H4>
           <ul>
             <li>
@@ -101,7 +107,7 @@
               <button id="send_post">投稿</button>
             </li>
           </ul>
-        </div>
+        </div> -->
 
 
 
