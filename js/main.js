@@ -8,8 +8,15 @@ function convertTimestampToDatetime(timestamp) {
   const H = _d.getHours().toString().padStart(2, '0');
   const i = _d.getMinutes().toString().padStart(2, '0');
   const s = _d.getSeconds().toString().padStart(2, '0');
-  time = [`${Y}/${m}/${d} ${H}:${i}:${s}`,`${Y}${m}${d}${H}${i}${s}`];
+  time = [`${Y}/${m}/${d} ${H}:${i}:${s}`, `${Y}${m}${d}${H}${i}${s}`];
   return time;
+}
+
+// オブジェクト配列中の同一要素を削除した配列を返す。
+function goodByeNotOriginal(array){
+  const uniqueArray = array.filter((element, index, self) => self.findIndex(e => e.id === element.id) === index);
+  console.log(uniqueArray);
+  return uniqueArray
 }
 
 // function jsonParse(data){
@@ -35,7 +42,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  
+
   authDomain: "skill-records-f67d6.firebaseapp.com",
   projectId: "skill-records-f67d6",
   storageBucket: "skill-records-f67d6.appspot.com",
@@ -65,267 +72,207 @@ function randomNumber(min, max) {
 
 function mkId() {
   let id = `${convertTimestampToDatetime(serverTimestamp().second)[1]}_${randomNumber(100, 999)}`;
-return id;
+  return id;
 }
 // ==========================================================================================
 
 
-    //❸データ送信
-    $('#btn_add_folder_element').on('click', function() {
-      if ($('#folder_name').val()) {
-        const folderData = {
-          // file_id:[],
-          // ↑フォルダのデータにpostのid入れてた方が探しやすそう。どうなんだろ。
-          name: $('#folder_name').val(),
-          time: serverTimestamp(),
-        };
-        console.log(folderData);
-        //addDoc(場所, データ)をぶち込む
-        addDoc(collection(db, 'folder'), folderData);
-        //navにappend・prepend → ここはまとめて関数で画面更新。
+//❸データ送信
+$('#btn_add_folder_element').on('click', function () {
+  if ($('#folder_name').val()) {
+    const folderData = {
+      // file_id:[],
+      // ↑フォルダのデータにpostのid入れてた方が探しやすそう。どうなんだろ。
+      name: $('#folder_name').val(),
+      time: serverTimestamp(),
+    };
+    console.log(folderData);
+    //addDoc(場所, データ)をぶち込む
+    addDoc(collection(db, 'folder'), folderData);
 
-        //   $('#folder_wrapper_element').prepend(`<div class="folder" id=${folderData.id}>
-        //   <h4>${folderData.name}</h4>
-        //   <ul>
-        //   </ul>
-        // </div>`);
+    $('#folder_name').val() = "";
+  } else {
+    alert('フォルダ名を入力してください。')
+  }
+  location.reload();
+})
 
-        $('#folder_name').val() = "";
-      } else {
-        alert('フォルダ名を入力してください。')
-      }
-    location.reload();
-    })
+const folderPosts = [];
+// データ取得処理
+onSnapshot(q, (querySnapshot) => {
+  console.log(querySnapshot.docs);
 
-    const folderPosts = [];
-        // データ取得処理
-        onSnapshot(q, (querySnapshot) => {
-          console.log(querySnapshot.docs);
+  //欲しいものだけ取り出して新しい配列作る
+  const documents = [];
+  querySnapshot.docs.forEach(function (doc) {
+    const document = {
+      id: doc.id,
+      data: doc.data(),
+    };
+    documents.push(document);
+  });
+  console.log(documents);
 
-          //欲しいものだけ取り出して新しい配列作る
-          const documents = [];
-          querySnapshot.docs.forEach(function(doc) {
-            const document = {
-              id: doc.id,
-              data:doc.data(),
-            };
-            documents.push(document);
-          });
-          console.log(documents);
-
-          //みやすくくしたデータのタグを作る。
-          const folderElements = [];
-          const postPullElements = [];
-          documents.forEach(function(document) {
-            folderElements.push(`
+  //みやすくくしたデータのタグを作る。
+  const folderElements = [];
+  const postPullElements = [];
+  documents.forEach(function (document) {
+    folderElements.push(`
               <div class="folder" id=${document.id}>
                 <h4>${document.data.name}</h4>
                 <ul>
                 </ul>
               </div>
             `);
-            folderPosts.push(
-            {
-              folder_id: document.id,
-              folder_name: document.data.name,
-            }
-            );
-            postPullElements.push(`
+    folderPosts.push(
+      {
+        folder_id: document.id,
+        folder_name: document.data.name,
+      }
+    );
+    postPullElements.push(`
             <option value=${document.id}>${document.data.name}</option>
             `);
-          });
+  });
+
+  // console.log('folderElements');
+  // console.log(folderElements)
+  $('#folder_wrapper_element').empty();
+  $('#folder_wrapper_element').prepend(folderElements);
+  $('#post_select').prepend(postPullElements);
+  // console.log(folderElements);
+  // console.log(folderPosts);
+});
 
 
 
 
-
-          // console.log('folderElements');
-          // console.log(folderElements)
-          $('#folder_wrapper_element').empty();
-          $('#folder_wrapper_element').prepend(folderElements);
-          $('#post_select').prepend(postPullElements);
-          // console.log(folderElements);
-          // console.log(folderPosts);
-        });
-
-
-
-
-// ==========================================================================================
-
-// data
+// =========================================================================================
 let folders = [];
 
-
-
-$('#btn_add_post_element').on('click', function(){
+$('#btn_add_post_element').on('click', function () {
   alert('クリック');
-})
+});
 
-// let folders = [];
-// $('#btn_add_folder_element').on('click', function(){
-//   // alert('クリック');
-//   let folder_name = window.prompt();
-//   let folder = {
-//     name:folder_name,
-//     id:mkId(),
-//   }
-//   folders.push(folder);
-//   console.log(folders);
-// })
-
-// post_select
 // ================================================================
-    //❸データ送信
-    $('#send_post').on('click', function() {
-      let folderName = "";
-      console.log(`select:${$('#post_select').val()}`);
-      console.log(`folderPosts:${folderPosts}`);
-      folderPosts.forEach(function(folderPost) {
-        console.log(folderPost);
-        // console.log(jsonParse(folderPost).folder_id);
-        console.log(folderPost.folder_name);
-        if($('#post_select').val() == folderPost.folder_id){
-          folderName = folderPost.folder_name;
-        }
-      });
-
-      if ($('#post_tag').val()) {
-        const postData = {
-          id: $('#post_select').val(),
-          name: $('#post_name').val(),
-          tag: $('#post_tag').val(),
-          text:$('#post_text').val(),
-          time: serverTimestamp(),
-          folder: folderName,
-        };
-        console.log(postData);
-        //addDoc(場所, データ)をぶち込む
-        addDoc(collection(db, 'post'), postData);
-      } else {
-        alert('Youtubeを埋め込んでください。')
-      }
-    })
-
-
-
-    // ＝＝＝＝folderがクリックされたら＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-    // ◯◯がidの親要素に属するpostを取得
-
-    // function getFolderChilds(folderId) {
-    //   let documents = [];
-    //   onSnapshot(pq, (querySnapshot) => {
-    //     // console.log(querySnapshot.docs);
-    //     //欲しいものだけ取り出して新しい配列作る
-    //     querySnapshot.docs.forEach(function(doc) {
-    //       // console.log(doc.data().id)
-    //       if(doc.data().id == folderId) {
-    //         const document = {
-    //           id: doc.id,
-    //           data:doc.data(),
-    //         };
-    //         documents.push(document);
-    //       }
-    //     });
-    //     console.log(documents);
-    //   });
-    //   return documents
-    // }
-    // -------
-    let posts = [];
-    onSnapshot(pq, (querySnapshot) => {
-      // console.log(querySnapshot.docs);
-      //欲しいものだけ取り出して新しい配列作る
-      querySnapshot.docs.forEach(function(doc) {
-          const post = {
-            id: doc.id,
-            data:doc.data(),
-          };
-          posts.push(post);
-      });
-    });
-    console.log(posts);
-
-    function getFolderChilds(folderId) {
-      let childPosts = [];
-      posts.forEach(function(post) {
-        if(post.data.id == folderId) {
-          const childPost = {
-            id: post.id,
-            data:post.data,
-          };
-          childPosts.push(childPost);
-        }
-      });
-      return childPosts
+//❸データ送信
+$('#send_post').on('click', function () {
+  let folderName = "";
+  // console.log(`select:${$('#post_select').val()}`);
+  // console.log(`folderPosts:${folderPosts}`);
+  folderPosts.forEach(function (folderPost) {
+    console.log(`folderPost：${folderPost}`);
+    // console.log(jsonParse(folderPost).folder_id);
+    console.log(folderPost.folder_name);
+    if ($('#post_select').val() == folderPost.folder_id) {
+      folderName = folderPost.folder_name;
     }
+  });
 
-    function getPostById(id) {
-      let thisPost = '';
-      posts.forEach(function(post) {
-        if(post.id == id) {
-          const postData = {
-            id: post.id,
-            data:post.data,
-          };
-          // thisPost.push(postData);
-          // thisPost.push(postData);
-          thisPost = postData
-        }
-      });
-      return thisPost
+  if ($('#post_tag').val()) {
+    const postData = {
+      id: $('#post_select').val(),
+      name: $('#post_name').val(),
+      tag: $('#post_tag').val(),
+      text: $('#post_text').val(),
+      time: serverTimestamp(),
+      folder: folderName,
+    };
+    console.log(postData);
+    //addDoc(場所, データ)をぶち込む
+    addDoc(collection(db, 'post'), postData);
+  } else {
+    alert('Youtubeを埋め込んでください。')
+  }
+  // location.reload();
+});
+
+
+
+// ＝＝＝＝folderがクリックされたら＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+// -------
+let posts = [];
+onSnapshot(pq, (querySnapshot) => {
+  // console.log(querySnapshot.docs);
+  //欲しいものだけ取り出して新しい配列作る
+  querySnapshot.docs.forEach(function (doc) {
+    const post = {
+      id: doc.id,
+      data: doc.data(),
+    };
+    posts.push(post);
+  });
+});
+console.log(posts);
+
+function getFolderChilds(folderId) {
+  let childPosts = [];
+  posts.forEach(function (post) {
+    if (post.data.id == folderId) {
+      const childPost = {
+        id: post.id,
+        data: post.data,
+      };
+      childPosts.push(childPost);
     }
+  });
+  return childPosts
+}
 
-$(document).on('click', '.folder', function(){
+function getPostById(id) {
+  let thisPost = '';
+  posts.forEach(function (post) {
+    if (post.id == id) {
+      const postData = {
+        id: post.id,
+        data: post.data,
+      };
+      // thisPost.push(postData);
+      // thisPost.push(postData);
+      thisPost = postData
+    }
+  });
+  return thisPost
+}
+
+$(document).on('click', '.folder', function () {
   // console.log(folderClickedId);
-    let folderId =  $(this).attr('id');
-    // if ($(`#${folderId} li`)) {
-      $('.folder li').remove();
-      // $(`#${folderId} li`).remove();
-    // } else {
-      // 押されたfolderのid取得。
-      // このidでfolderに属したpostを取得。
-      let folderChilds = getFolderChilds(folderId);
-      folderChilds.forEach(function(folderChild) {
-        $(`#${folderId} ul`).prepend(`
+  let folderId = $(this).attr('id');
+  // if ($(`#${folderId} li`)) {
+  $('.folder li').remove();
+  // $(`#${folderId} li`).remove();
+  // } else {
+  // 押されたfolderのid取得。
+  // このidでfolderに属したpostを取得。
+  let folderChilds = getFolderChilds(folderId);
+  // 同じ要素が複数入る謎のバグ対策
+  folderChilds = goodByeNotOriginal(folderChilds);
+  console.log(`folderChilds：${folderChilds}`)
+  folderChilds.forEach(function (folderChild) {
+    $(`#${folderId} ul`).prepend(`
         <li id='${folderChild.id}'>${folderChild.data.name}</li>
         `);
-      });
-      // console.log(folderChilds)
-      if (folderChilds.length == 0) {
-        alert('まだフォフォルダは空です。記事を追加してください。')
-      }
-    // }
+  });
+  // for (let i = 0; i < folderChilds.length; i++) {
+  //     $(`#${folderId} ul`).prepend(`
+  //       <li id='${folderChilds[i].id}'>${folderChilds[i].data.name}</li>
+  //       `);
+  // }
 
+  console.log(`folderChilds：${folderChilds}`)
+  console.log(folderChilds)
+  if (folderChilds.length == 0) {
+    alert('まだフォフォルダは空です。記事を追加してください。')
+  }
 });
-// let folderClickedId = [];
-// $(document).on('click', '.folder', function(){
-//   console.log(folderClickedId);
-//     let folderId =  $(this).attr('id');
-//     if (folderClickedId.includes(folderId)) {
-//       let searchId = folderClickedId.includes(folderId);
-//       $(`#${folderId} li`).remove();
-//         folderClickedId.splice(searchId, 1);
-//     } else {
-//       // 押されたfolderのid取得。
-//       // このidでfolderに属したpostを取得。
-//       console.log(getFolderChilds(folderId));
-//       let folderChilds = getFolderChilds(folderId);
-//       folderChilds.forEach(function(folderChild) {
-//         $(`#${folderId} ul`).prepend(`
-//         <li id='${folderChild.id}'>${folderChild.data.name}</li>
-//         `);
-//       })
-//       folderClickedId.push(folderId);
-//     }
-// });
+
 
 
 // 真ん中に記事表示
 
-$(document).on('click', '.folder li', function(){
+$(document).on('click', '.folder li', function () {
   $('.post-wrapper').empty();
-  let postId =  $(this).attr('id');
+  let postId = $(this).attr('id');
   console.log(postId)
   let thisPost = getPostById(postId)
   console.log(thisPost)
