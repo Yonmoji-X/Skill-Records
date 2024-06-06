@@ -48,7 +48,7 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-
+  
   authDomain: "skill-records-f67d6.firebaseapp.com",
   projectId: "skill-records-f67d6",
   storageBucket: "skill-records-f67d6.appspot.com",
