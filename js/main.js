@@ -98,6 +98,8 @@ $('#btn_add_folder_element').on('click', function () {
 })
 
 const folderPosts = [];
+const folderElements = [];
+const postPullElements = [];
 // データ取得処理
 onSnapshot(q, (querySnapshot) => {
   console.log(querySnapshot.docs);
@@ -114,12 +116,12 @@ onSnapshot(q, (querySnapshot) => {
   console.log(documents);
 
   //みやすくくしたデータのタグを作る。
-  const folderElements = [];
-  const postPullElements = [];
+  // const folderElements = [];
+  // const postPullElements = [];
   documents.forEach(function (document) {
     folderElements.push(`
               <div class="folder" id=${document.id}>
-                <h4>${document.data.name}</h4>
+                  <h4>${document.data.name}</h4>
                 <ul>
                 </ul>
               </div>
@@ -138,7 +140,8 @@ onSnapshot(q, (querySnapshot) => {
   // console.log('folderElements');
   // console.log(folderElements)
   $('#folder_wrapper_element').empty();
-  $('#folder_wrapper_element').prepend(folderElements);
+  $('#folder_wrapper_element').append(folderElements);
+  // $('#folder_wrapper_element').prepend(folderElements);
   $('#post_select').prepend(postPullElements);
   // console.log(folderElements);
   // console.log(folderPosts);
@@ -151,12 +154,43 @@ onSnapshot(q, (querySnapshot) => {
 let folders = [];
 
 $('#btn_add_post_element').on('click', function () {
-  alert('クリック');
+  // alert('クリック');
+  $('#post-wrapper').empty();
+  $('#post-wrapper').prepend(`
+  <div class="post">
+  <H4>投稿</H4>
+  <ul>
+    <li>
+      <label>タイトル</label>
+      <input type="text" id="post_name">
+    </li>
+    <li>
+      <label>フォルダ</label>
+      <select id="post_select">
+        <option value=""></option>
+      </select>
+    </li>
+    <li>
+      <label>Youtube埋め込み</label>
+      <textarea name="" id="post_tag" cols="30" rows="10"></textarea>
+    </li>
+    <li>
+      <label>解説</label>
+      <textarea name="" id="post_text" cols="30" rows="10"></textarea>
+    </li>
+    <li>
+      <button id="send_post">投稿</button>
+    </li>
+  </ul>
+</div>
+`);
+$('#post_select').prepend(postPullElements);
 });
 
 // ================================================================
 //❸データ送信
-$('#send_post').on('click', function () {
+$(document).on('click', '#send_post', function () {
+// $('#send_post').on('click', function () {
   let folderName = "";
   // console.log(`select:${$('#post_select').val()}`);
   // console.log(`folderPosts:${folderPosts}`);
@@ -181,6 +215,13 @@ $('#send_post').on('click', function () {
     console.log(postData);
     //addDoc(場所, データ)をぶち込む
     addDoc(collection(db, 'post'), postData);
+
+    // フォームリセット
+    $('#post_select').val('');
+    $('#post_name').val('');
+    $('#post_tag').val('');
+    $('#post_text').val('');
+    alert('投稿しました')
   } else {
     alert('Youtubeを埋め込んでください。')
   }
@@ -227,8 +268,6 @@ function getPostById(id) {
         id: post.id,
         data: post.data,
       };
-      // thisPost.push(postData);
-      // thisPost.push(postData);
       thisPost = postData
     }
   });
@@ -279,17 +318,22 @@ $(document).on('click', '.folder li', function () {
   console.log(thisPost.data.name)
   console.log(thisPost.data.tag)
   console.log(thisPost.data.text)
-  $('.post-wrapper').prepend(`
+  // $('.post-wrapper').prepend(`
+  // $('.post-wrapper').prepend(`
+  $('.post-wrapper').append(`
   <div class="post">
-  <div class="post-title">${thisPost.data.name}</div>
-  <div class="post-mc-wrapper">
-    <div class="post-movie">
-      ${thisPost.data.tag}
+    <div class="folder-post-head">
+      <div class="post-title">${thisPost.data.name}</div>
+      <button class="remove-post" id=${thisPost.id}>削除</button>
     </div>
-    <div class="post-contents">
-      <div>
-        <h5>解説</h5>
+    <div class="post-mc-wrapper">
+      <div class="post-movie">
+        ${thisPost.data.tag}
       </div>
+      <div class="post-contents">
+        <div>
+          <h5>解説</h5>
+        </div>
       <div>${thisPost.data.text}</div>
     </div>
   </div>
@@ -297,3 +341,8 @@ $(document).on('click', '.folder li', function () {
   `)
 });
 
+// Postの削除
+$(document).on('click', '.remove-post', function () {
+  let postId = $(this).attr('id');
+
+});

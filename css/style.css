@@ -138,6 +138,23 @@ body {
     font-size: 15px;
   }
 
+  .folder-post-head {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: end; */
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .remove-post {
+    height: 25px;
+    width:40px;
+    font-size: 10px;
+    border-radius: 30px;
+    margin-right: 5px;
+  }
+
+
   aside {
     outline: 1px solid gray;
     width: 200px;
